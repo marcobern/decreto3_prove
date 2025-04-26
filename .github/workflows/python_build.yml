@@ -1,0 +1,67 @@
+name: Build Python Installers
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # allows manual trigger
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry
+        run: |
+          pip install poetry
+          poetry install --with dev
+
+      - name: Build Windows executable
+        run: |
+          poetry run pyinstaller --onefile --windowed --name "Decreto3Eolico" --icon=assets/icon/icon.ico decreto3_eolico.py
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: Decreto3Eolico-windows
+          path: dist/Decreto3Eolico.exe
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry and dependencies
+        run: |
+          pip install poetry
+          poetry install --with dev
+
+      - name: Build macOS app
+        run: |
+          poetry run pyinstaller --onefile --windowed --name "Decreto3Eolico" --icon=assets/icon/icon.icns decreto3_eolico.py
+
+      - name: Package macOS app
+        run: |
+          mkdir -p dist/macos
+          mv dist/Decreto3Eolico.app dist/macos/Decreto3Eolico.app
+
+      - name: Upload macOS app
+        uses: actions/upload-artifact@v4
+        with:
+          name: Decreto3Eolico-macos
+          path: dist/macos
