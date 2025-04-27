@@ -58,6 +58,7 @@ def generate_report():
 
 # Create main window
 root = tk.Tk()
+root.state('zoomed')
 root.title("Decreto3 Eolico Report Generator")
 root.geometry("800x300")
 
