@@ -7,13 +7,7 @@ from ..steps.step_1_import import step_import_dati
 
 def run_step_import(self):
     try:
-        # Reset avvertenze
-        for widget in self.avvertenze_frame.winfo_children():
-            widget.destroy()
-
-        ctk.CTkLabel(self.avvertenze_frame, text="Avvertenze!", font=("Helvetica", 16, "bold"),
-                     text_color="red").pack(pady=10)
-
+        
         # Prepara input
         files = {
             "distanza_angolo_WTG": self.file1_entry.get(),
