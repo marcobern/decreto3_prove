@@ -3,7 +3,7 @@ import os
 import pandas as pd
 import numpy as np
 from tkinter import filedialog
-from decreto3eolico.step_executor import step_import_dati
+from decreto3eolico.interface.steps_on_gui.gui_step_1_import import run_step_import
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -87,7 +87,7 @@ class MainWindow(ctk.CTk):
         ctk.CTkLabel(left_frame, text="Orografia:").grid(row=5, column=0, padx=5, pady=10, sticky='w')
         orografia_dropdown.grid(row=5, column=1, padx=5, pady=10)
 
-        self.generate_button = ctk.CTkButton(left_frame, text="Genera Report", command=self.run_step_import,
+        self.generate_button = ctk.CTkButton(left_frame, text="Genera Report", command=lambda: run_step_import(self),
                                              fg_color=BOTTONI_FG, hover_color=BOTTONI_HOVER, text_color="white")
         self.generate_button.grid(row=6, column=0, columnspan=3, pady=20)
 
@@ -100,7 +100,10 @@ class MainWindow(ctk.CTk):
         ctk.CTkLabel(fasi_frame, text="Fasi Operative", font=("Helvetica", 18, "bold")).pack(pady=10)
 
         fasi = [
-            "1. Import Data",
+            "1. Import data",
+
+            "2. Tempi di misura",
+            "3. Validazione dati", 
             "4. Organizzazione dati iniziali",
             "5. Verifica condizioni di attivazione",
             "6. Avvio procedura iterativa",
@@ -143,7 +146,7 @@ class MainWindow(ctk.CTk):
 
             outputs = step_import_dati(files, results_dir)
 
-            msg_label = ctk.CTkLabel(self.avvertenze_frame, text="✅ Importazione avvenuta con successo", text_color="green")
+            msg_label = ctk.CTkLabel(self.avvertenze_frame, text="✅ Importazione dati avvenuta con successo", text_color="green")
             msg_label.pack()
 
             label, frame = self.fasi_labels[0]
